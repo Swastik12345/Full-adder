@@ -1,0 +1,28 @@
+// Code your design here
+module adder_8bit_good (
+    input  wire [7:0] a,
+    input  wire [7:0] b,
+    input  wire       cin,
+    output reg  [7:0] sum,
+    output reg        cout
+);
+
+    always @(*) begin
+        {cout, sum} = a + b + cin;
+    end
+
+endmodule
+
+module adder_8bit_bad (
+    input  wire [7:0] a,
+    input  wire [7:0] b,
+    input  wire       cin,
+    output reg  [7:0] sum,
+    output reg        cout
+);
+
+    always @(*) begin
+        {cout, sum} = a + cin;  // ❌ ignores b
+    end
+
+endmodule
