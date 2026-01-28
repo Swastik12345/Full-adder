@@ -8,7 +8,7 @@ module adder_8bit_good (
 );
 
     always @(*) begin
-        {cout, sum} = a + b + cin;
+      {cout, sum} = a + b + cin; //proper
     end
 
 endmodule
@@ -22,7 +22,7 @@ module adder_8bit_bad (
 );
 
     always @(*) begin
-        {cout, sum} = a + cin;  // ❌ ignores b
+      {cout, sum} = a + cin;  // improper 
     end
 
 endmodule
