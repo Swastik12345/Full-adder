@@ -1,0 +1,76 @@
+module tb_adder_8bit;
+
+    reg  [7:0] a, b;
+    reg        cin;
+
+    wire [7:0] sum_good, sum_bad;
+    wire       cout_good, cout_bad;
+
+    reg  [8:0] expected;
+
+    // Instantiate DUTs
+    adder_8bit_good dut_good (
+        .a(a), .b(b), .cin(cin),
+        .sum(sum_good), .cout(cout_good)
+    );
+
+    adder_8bit_bad dut_bad (
+        .a(a), .b(b), .cin(cin),
+        .sum(sum_bad), .cout(cout_bad)
+    );
+
+    initial begin
+        // Initialization
+        a = 0; b = 0; cin = 0;
+        #5;
+
+        // Random testing
+      repeat (5) begin
+            a   = $random;
+            cin = $random;
+            #5;
+
+            expected = a + b + cin;
+
+            // GOOD DUT check
+            if ({cout_good, sum_good} !== expected)
+                $display("GOOD FAIL: a=%b b=%b cin=%b", a, b, cin);
+            else
+                $display("GOOD PASS");
+
+            // BAD DUT check (expected to fail)
+            if ({cout_bad, sum_bad} !== expected)
+                $display("BAD FAIL (EXPECTED)");
+            else
+                $display("BAD PASS (RARE)");
+
+            $display("------------------------");
+        end
+      
+      repeat (10) begin
+            a   = $random;
+            b   = $random;
+            cin = $random;
+            #5;
+
+            expected = a + b + cin;
+
+            // GOOD DUT check
+            if ({cout_good, sum_good} !== expected)
+                $display("GOOD FAIL: a=%b b=%b cin=%b", a, b, cin);
+            else
+                $display("GOOD PASS");
+
+            // BAD DUT check (expected to fail)
+            if ({cout_bad, sum_bad} !== expected)
+                $display("BAD FAIL (EXPECTED)");
+            else
+                $display("BAD PASS (RARE)");
+
+            $display("------------------------");
+        end
+
+        $finish;
+    end
+
+endmodule
